@@ -1,0 +1,13 @@
+main file  inputs
+	wiki	wiki_query.pkl
+	ppr	doc_query.pkl
+	both	cmd_qr1.pkl, cmd_qr2.pkl 
+
+
+main file ouptus
+	wiki	wiki_out.txt
+	ppr	doc_out.txt
+	both	1.txt, 2.txt
+
+prog end
+	PROG EXIT.txt
