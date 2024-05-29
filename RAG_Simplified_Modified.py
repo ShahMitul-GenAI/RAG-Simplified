@@ -1,5 +1,6 @@
 # %%
 import time
+import json
 import os.path
 import pickle
 import streamlit as st
@@ -66,8 +67,8 @@ else:
 # setting up info retreival from Wikipedia pages (1st knowledge source)
 if selection == "Wikipedia":
     print(f"wiki prompt insider wrapper is {query}")
-    wikipedia = WikipediaQueryRun(api_wrapper=WikipediaAPIWrapper())
-    wiki_output = wikipedia.run(query)
+    Wikipedia = WikipediaQueryRun(api_wrapper=WikipediaAPIWrapper())
+    wiki_output = Wikipedia.run(query)
 
 # %%
 # fragmegting the document content to fit in the number of token limitations
@@ -91,9 +92,9 @@ if selection == "Wikipedia":
 # %%
 if selection.strip() == "Wikipedia":
     wiki_out = qa.invoke(query)
-    with open("./notifications/wiki_out.txt", 'w') as fwk:
-        fwk.write(str(wiki_out)['result'])
-        pickle.dumps("wiki_out.txt")
+    with open("./notifications/wiki_out.json", 'w') as f:
+        json.dump(wiki_out, f)
+        print(wiki_out)
 
 # %%
 # Loading research paper from web source (2nd knoledge source)
@@ -124,8 +125,9 @@ if selection == "Research Paper":
 # get query from U/I now
 if selection == "Research Paper":
     result = qa.invoke(query)
+    answer = result['result']
     with open("./notifications/doc_out.txt", 'w') as frp:
-        frp.write(str(resul['result']))
+        frp.write(str(result))
     pickle.dumps("doc_out.txt")
 
 # %%
@@ -168,8 +170,6 @@ if selection == "Both":
 
 # %%
 # exporting program ending indicator
-ffnl = open("./notifications/PROG EXIT.txt", "rb")
-pickle.dumps(123, ffnl)
+ffnl = open("./notifications/PROG EXIT.txt", "wb")
+pickle.dumps("PROG EXIT.txt")
 ffnl.close()
-
-

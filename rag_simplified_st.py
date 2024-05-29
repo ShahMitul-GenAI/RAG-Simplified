@@ -4,6 +4,7 @@ from pathlib import Path
 import os.path
 import time
 import pickle
+import json
 # import warnings
 # warnings.filterwarnings("ignore")
 
@@ -57,21 +58,14 @@ def combined_choice():
     if st.button("Submit"):
         return combined_query1, combined_query2
 
-def routine_process(notify):
-    while st.spinner("Processing your request..."):
-        display = []
-        while not os.path.exists(str(check_notifications) + "PROG EXIT.txt"):
-            time.sleep(3)
-            if os.path.exist(str(check_notifications) + str(notify)):
-                with open((str(check_notifications) + str(notify)), 'r') as fp:
-                    lines = fp.read()
-                    line = lines.splitlines()
-                for each in line:
-                    display.append(each)
-                break
-        for each in display:
-            st.write(each)
+def routine_process():
+    with st.spinner("Processing your request..."):
+        # display = []
+        assert os.path.exists("C:/Users/Mast_Nijanand/RAG Simplified/notifications/wiki_out.json")
     st.success("Data processing complete!")
+    with open("C:/Users/Mast_Nijanand/RAG Simplified/notifications/wiki_out.json", 'r') as fp:
+        output = json.load(fp)
+        st.markdown(f"### {output['result']}")
 
 def dual_process(notify1, notify2):
     while st.spinner("Processing your request..."):
@@ -105,9 +99,7 @@ def dual_process(notify1, notify2):
     st.success("Data processing complete!")
 
 def main_func(option):
-    print("file ran before")
-    run_file()
-    print("file ran after")
+#    run_file()
     if option == "Wikipedia":
         wiki_query = wiki_choice()
 
@@ -117,15 +109,10 @@ def main_func(option):
                 fp.write(str(wiki_query))
             pickle.dumps("wiki_query.txt")
 
-            # loading run file output
-            while not os.path.exists(check_notifications + "wiki_out.txt"):
-                time.sleep(1)
-                if os.path.exists(check_notifications + "wiki_out.txt"):
-                    fwk = open('./notifications/wiki_out.txt', 'r')
-                    wiki_out = fwk.read()
-                    fwk.close()
+            run_file()
+            assert os.path.exists(check_notifications + "wiki_out.json")
 
-            routine_process(notify = wiki_out)
+            routine_process()
 
     elif (option == "Research Paper"):
         research_query = research_choice()
@@ -135,6 +122,8 @@ def main_func(option):
             with open("./notifications/doc_query.txt", "w") as fp:
                 fp.write(str(research_query))
             pickle.dumps("doc_query.txt")
+
+            run_file()
 
             # loading run file output
             while not os.path.exists(check_notifications + str("PROG EXIT")):
@@ -161,6 +150,8 @@ def main_func(option):
             fq.close()
             pickle.dumps("cmd_qr2.txt")
 
+            run_file()
+
             # loading run file outputs
             while not os.path.exists(check_notifications + str("PROG EXIT")):
                 time.sleep(1)
@@ -175,88 +166,6 @@ def main_func(option):
                     break
             dual_process(notify1 = one, notify2 = two)
 
-# if 'user_inputs' not in st.session_state:
-#     st.session_state.user_inputs = []
-
-
-
-# function to export user inputs from form
-# def export_inputs(data):
-#     st.session_state['user_inputs'].append(data)
-#     with open("./notifications/data_inputs.pkl", "wb") as fp:
-#         pickle.dump(st.session_state.user_inputs, fp)
-#
-# # displaying page title and header
-# st.title("User Inputs for e-Commerce Customer Reviews")
-# st.header("Provide the requested information")
-
-# develop form
-#
-# with st.form(key="user_interaction"):
-#     # get new data processing choice
-#     new_data_st = st.selectbox(label = "Please select your choice from the dropdown", options = ["Yes", "No"])
-#
-#     # get name of product in couple to few words
-#     product = st.text_input(
-#         label = "Please describe your product in 2-5 phrases",
-#         max_chars = 30)
-#
-#     # get number of total customer reviews to process
-#     max_cust = st.number_input(
-#         label="Select number of Amazon customer reviews to be collected",
-#         max_value=50,
-#         min_value=10,
-#         step=5,
-#     )
-#     st.session_state.user_inputs = [{"new_data_st": new_data_st, "product": product, "max_cust": max_cust}]
-#     submit_button = st.form_submit_button("Submit")
-#
-# if submit_button:
-#     export_inputs(st.session_state.data_collect)
-#
-#     if new_data_st == "Yes":
-#
-#         if os.path.exists(str(file_path) + "data_output.pkl"):
-#             shutil.move(str(file_path) + "data_output.pkl",
-#                         str(file_path) + "review_docs/data_output.pkl")
-#         if os.path.exists(str(file_path) + "amazon_reviews_df"):
-#             shutil.move(str(file_path) + "amazon_reviews_df",
-#                         str(file_path) + "review_docs/amazon_reviews_df")
-#
-#
-#         run_file()
-#         new_file_path = str(file_path) + "data_output.pkl"
-#         check_notification = str(file_path) + "notifications/"
-#
-#         with st.spinner("Processing your request....."):
-#             while not os.path.exists(str(check_notification) + "PROG EXIT.txt"):
-#                 i = 0
-#                 j = 0
-#                 display = []
-#                 while not os.path.exists(str(check_notification) + "PROG EXIT.txt"):
-#                     if os.path.exists(str(check_notification) + ("note" + str(i) + ".txt")):
-#                         with open((str(check_notification) + ("note" + str(i) + ".txt")), 'r') as fp:
-#                             lines = fp.read()
-#                             line = lines.splitlines()
-#                             for each in line:
-#                                 display.append(each)
-#                         i += 1
-#                     if (os.path.exists(str(check_notification) + 'LARGE.txt')) and (j == 0):
-#                         i = 3
-#                         j = 1
-#                     if os.path.exists(str(check_notification) + ("SMALL.txt")) or (i == 6):
-#                         break
-#             for each in display:
-#                 st.write(each)
-#         st.success("Data Processing Complete!")
-#         df = pd.DataFrame()
-#         df = pd.read_pickle("amazon_reviews_df.pkl")
-#         st.write(df)
-#     else:
-#         st.write("Displaying results of previous product reviews")
-#         df = pd.DataFrame()
-#         df = pd.read_pickle("amazon_reviews_df.pkl")
-#         st.write(df)
 
 if __name__ == "__main__":
     if Options:
