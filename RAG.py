@@ -26,19 +26,16 @@ def load_data_set(source: DataSource, query: str):
     if source not in SUPPORTED_DATA_SOURCES:
         raise ValueError(f"Provided data source {source} is not supported.")
 
-    if source == "Wikipedia":
-        Wikipedia = WikipediaQueryRun(api_wrapper=WikipediaAPIWrapper())
-        data = Wikipedia.run(query)
-    else:
-        loader = PyPDFLoader("./2312.10997v5.pdf")
-        data = loader.load()
-
     # fragmenting the document content to fit in the number of token limitations
     text_splitter = RecursiveCharacterTextSplitter(chunk_size = 500, chunk_overlap = 50)
 
     if source == "Wikipedia":
+        Wikipedia = WikipediaQueryRun(api_wrapper=WikipediaAPIWrapper())
+        data = Wikipedia.run(query)
         split_docs = [Document(page_content=sent) for sent in data.split('\n')]
     else:
+        loader = PyPDFLoader("./2312.10997v5.pdf")
+        data = loader.load()
         split_docs = text_splitter.split_documents(data)
 
     data_set = DocArrayInMemorySearch.from_documents(documents = split_docs, embedding = embeddings)
