@@ -2,6 +2,7 @@ import streamlit as st
 from RAG import generate_answer
 
 st.title("RAG Model Benefit Demonstration")
+st.header("\n A Simplified Approach")
 
 if 'selection' not in st.session_state:
     st.session_state.selection = ""
@@ -48,7 +49,7 @@ def main(selection):
                 answer = generate_answer(selection, wiki_query)
 
                 st.success("Data processing complete!")
-                st.markdown(f"### {answer['result']}")
+                st.markdown(f"###### {answer['result']}")
     elif selection == "Research Paper":
         research_query = research_choice()
 
@@ -57,7 +58,7 @@ def main(selection):
                 answer = generate_answer(selection, research_query)
 
                 st.success("Data processing complete!")
-                st.markdown(answer['result'])
+                st.write(answer['result'])
 
 if __name__ == "__main__":
     if Options:
