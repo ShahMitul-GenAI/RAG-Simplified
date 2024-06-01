@@ -1,5 +1,5 @@
 import streamlit as st
-from src.rag.simple_rag import generate_answer
+from simple_rag.RAG import generate_answer
 
 st.title("RAG Model Benefit Demonstration")
 st.header("\n A Simplified Approach")
