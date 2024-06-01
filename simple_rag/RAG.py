@@ -1,5 +1,4 @@
 import os.path
-import docarray
 from dotenv import load_dotenv
 from typing import Literal, get_args
 from langchain.chains import RetrievalQA
