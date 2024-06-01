@@ -35,6 +35,8 @@ poetry shell
 poetry install
 ```
 
+6. Add your own OpenAI API key in the `.env` file by replacing 'xxxxxxxx' with your own key. 
+
 ### Running the Application
 1. After installing the dependencies, you can run the Streamlit app by executing the following command:
 ```bash
