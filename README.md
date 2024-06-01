@@ -12,17 +12,22 @@ This project provides a practical demonstration of Retrieval-Augmented Generatio
 ### Installation
 1. Clone this repository to your local machine:
 ```bash
-git clone https://github.com/yourusername/simplified-rag.git
+git clone https://github.com/ShahMitul-GenAI/RAG-Simplified
 ```
 
 2. Navigate to the project directory:
 ```bash
-cd simplified-rag
+cd simplified_rag
 ```
 
 3. Install Poetry using pip (if not already installed):
 ```bash
 pip install poetry
+```
+
+4. Activate the virtual enviroment created by Poetry:
+```bash
+poetry shell
 ```
 
 5. Install project dependencies using Poetry:
