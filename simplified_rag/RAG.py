@@ -17,6 +17,9 @@ SUPPORTED_DATA_SOURCES = get_args(DataSource)
 load_dotenv()
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
+if OPENAI_API_KEY == 'xxxxxxxx':
+    raise ValueError("Please add your own OpenAI API key in the .env file by replacing 'xxxxxxxx' with your own key.")
+
 # loading model and defining embedding
 llm = ChatOpenAI(temperature=0, model='gpt-3.5-turbo')
 embeddings = OpenAIEmbeddings()
