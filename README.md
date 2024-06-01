@@ -25,7 +25,7 @@ cd simplified_rag
 pip install poetry
 ```
 
-4. Activate the virtual enviroment created by Poetry:
+4. Activate the virtual environment created by Poetry:
 ```bash
 poetry shell
 ```
@@ -35,7 +35,7 @@ poetry shell
 poetry install
 ```
 
-6. Add your own OpenAI API key in the `.env` file by replacing 'xxxxxxxx' with your own key. 
+6. Rename `.env.sample` to `.env` and add your own OpenAI API key in the `.env` file by replacing `xxxxxxxx` with your own key. 
 
 ### Running the Application
 1. After installing the dependencies, you can run the Streamlit app by executing the following command:
