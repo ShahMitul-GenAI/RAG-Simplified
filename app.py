@@ -1,5 +1,5 @@
 import streamlit as st
-from RAG import generate_answer
+from src.rag.simple_rag import generate_answer
 
 st.title("RAG Model Benefit Demonstration")
 st.header("\n A Simplified Approach")
@@ -7,7 +7,7 @@ st.header("\n A Simplified Approach")
 if 'selection' not in st.session_state:
     st.session_state.selection = ""
 
-Options = False
+options = False
 emp = st.empty()
 vari = emp.selectbox(
     key = "Options",
@@ -17,7 +17,7 @@ vari = emp.selectbox(
 
 if st.button("Select"):
     choice = vari
-    Options = True
+    options = True
 
 
 def wiki_choice() -> str:
@@ -61,7 +61,7 @@ def main(selection):
                 st.write(answer['result'])
 
 if __name__ == "__main__":
-    if Options:
+    if options:
         st.session_state.selection = choice
 
     main(st.session_state.selection)
