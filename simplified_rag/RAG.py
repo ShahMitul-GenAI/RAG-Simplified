@@ -1,5 +1,7 @@
 import os.path
+from os import listdir
 from dotenv import load_dotenv
+from os.path import isfile, join
 from typing import Literal, get_args
 from langchain.chains import RetrievalQA
 from langchain.schema.document import Document
@@ -24,6 +26,8 @@ if OPENAI_API_KEY == 'xxxxxxxx':
 llm = ChatOpenAI(temperature=0, model='gpt-3.5-turbo')
 embeddings = OpenAIEmbeddings()
 
+# get target folder for uploaded docs
+target_folder = "./docs/"
 
 def load_data_set(source: DataSource, query: str):
     if source not in SUPPORTED_DATA_SOURCES:
@@ -37,7 +41,13 @@ def load_data_set(source: DataSource, query: str):
         data = Wikipedia.run(query)
         split_docs = [Document(page_content=sent) for sent in data.split('\n')]
     else:
-        loader = PyPDFLoader("./2312.10997v5.pdf")
+        # get files from target directory
+        my_file = [f for f in listdir(target_folder) if isfile(join(target_folder, f))]
+        my_file = target_folder + my_file[0]
+        print(f"my file is {my_file}")
+
+        # load uploaded pdf file
+        loader = PyPDFLoader(my_file)
         data = loader.load()
         split_docs = text_splitter.split_documents(data)
 
