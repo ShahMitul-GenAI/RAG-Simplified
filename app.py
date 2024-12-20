@@ -48,7 +48,7 @@ def research_choice() -> str:
         uploaded_doc = st.file_uploader(
             label="Please upload your document",
             accept_multiple_files = False,
-            type=['pdf']
+            type=['pdf', 'txt', 'csv']
         )
         research_query = st.text_input(
             label = "Please input what you want to search",
