@@ -7,7 +7,7 @@ from langchain.chains import RetrievalQA
 from langchain.schema.document import Document
 from langchain_community.tools import WikipediaQueryRun
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import PyPDFLoader, TextLoader, CSVLoader
 from langchain_community.utilities import WikipediaAPIWrapper 
 from langchain.text_splitter import RecursiveCharacterTextSplitter 
 from langchain_community.vectorstores import DocArrayInMemorySearch
@@ -47,10 +47,17 @@ def load_data_set(source: DataSource, query: str):
         print(f"my file is {my_file}")
 
         # load uploaded pdf file
-        loader = PyPDFLoader(my_file)
-        data = loader.load()
-        split_docs = text_splitter.split_documents(data)
-
+        if my_file.endswith(".pdf"):
+            loader = PyPDFLoader(my_file)
+            data = loader.load()
+            split_docs = text_splitter.split_documents(data)
+        elif my_file.endswith(".txt"):
+            loader = TextLoader(my_file)
+            data = loader.load()
+            split_docs = text_splitter.split_documents(data)
+        elif my_file.endswith(".csv"): # Provide a csv file with clear data including proper headers for better output.
+            loader = CSVLoader(my_file)
+            split_docs = loader.load()
     data_set = DocArrayInMemorySearch.from_documents(documents = split_docs, embedding = embeddings)
 
     return data_set
